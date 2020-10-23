@@ -20,11 +20,10 @@ Project was developed by G.Vasiukov and S.Novitskiy
     
 **Requirements:**
 -	Python 3.7;
--	Numpy >= 1.13;
--	SciPy >= 0.19;
--	scikit-image >= 0.12;
--	scikit-learn >= 0.18;
--	Pandas >= 0.19;
+-	Numpy >= 1.14;
+-	SciPy >= 1.5.3;
+-	scikit-image >= 0.14;
+-	Pandas >= 1.1.3;
 -	Matplotlib >= 2.0.
 
 **Usage:**
