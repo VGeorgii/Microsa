@@ -143,9 +143,12 @@ ax = plt.imshow(gray_frangi_bit, cmap = 'gray')
 
 **Fibers skeletonization and labeling**
 
-fibers = fibseg.fibers_executor(gray_frangi_bit)
-fig, ax = plt.subplots(figsize = (50,50))
-ax = plt.imshow (fibers, cmap = 'gray')
+fibere_exe = fibers_executor (gray_frangi_bit)
+fig, ax = plt.subplots(figsize = (100,100))
+ax = plt.imshow(np.multiply(fibere_exe['skel_labels_pruned'] > 0, 1), cmap = 'gray')
+plt.axis('off')
+plt.show()
+
 
 ![pruned_skeleton](https://user-images.githubusercontent.com/65576385/121409573-498fcb00-c927-11eb-897e-8a78424296e4.png)
 
@@ -159,14 +162,14 @@ fbs_mrph = fibs_geom (fibere_exe, 25)
 
 **Fiber spatial analysis**
 
-fib_spat = fibs_spatial (cells_coords, fibere_exe, 25, cell_type = ['red', 'green', 'yellow'], cell_type_list = cell_type)
+fib_spat = fibs_spatial (cells_coords, fibere_exe, 25, cell_type = 'All', cell_type_list = cell_type)
 
 ![Table_2](https://user-images.githubusercontent.com/65576385/121409949-ac816200-c927-11eb-8252-6be29b3e4a81.PNG)
 
 
 **Cell spatial analysis**
 
-cell_cell_spt = cell_cell_spatial (cells_coords, 25, cell_type = 'All', cell_type_list = cell_type_l, cell_feature_list = 'None')
+cell_cell_spt = cell_cell_spatial (cells_coords, 25, cell_type = ['green', 'red'], cell_type_list = cell_type, cell_feature_list = [cell_feature_1, cell_feature_2])
 
 ![Table_4](https://user-images.githubusercontent.com/65576385/121410054-ca4ec700-c927-11eb-972b-f341d89d1c2d.PNG)
 
