@@ -12,10 +12,10 @@ Project was developed by G.Vasiukov and S.Novitskiy
 
 **Installation:**
 - Using pip:<br />
-    $ pip install mesa<br />
+    $ pip install Microsa<br />
 - Using Git repository:<br />
-    $ git clone https://github.com/VGeorgii/Mesa.git<br />
-    $ cd Mesa<br />
+    $ git clone https://github.com/VGeorgii/Microsa.git<br />
+    $ cd Microsa<br />
     $ python setup.py install<br />
     
 **Requirements:**
@@ -30,69 +30,160 @@ Project was developed by G.Vasiukov and S.Novitskiy
 
 Open a grayscale image, perform filtering, binarization and segmentation of fibers, calculate geometrical and spatial features of fibers, perform spatial analysis for other objects (cells).
 
-**Fibers:**
+**Fiber segmentation module:**
   
 - fibers_executor:<br />
   Function mainly performs segmentation of fibers and extract parameters that are required for other functions like number of       labels, distance between centroids etc.
 
-- fibs_cell_neigh:<br />
-  Function returns nested list that include fiber and indexes of cells’ (or other objects) neighbors. The distance is calculated     between cells centroid and closest pixel of fibers skeleton.
+  arguments:
+  image – gray scale image to process
 
-- fibs_cell_type_neighbor:<br />
-  Function use the variable that was returned by fibs_cell_neigh function to classify neighbor objects (for example different type   of cells) 
+  function returns:
+  'skeleton': image with skeletonized objects, 
+  'distance': distance from skeleton to the edge of original object (radius), 
+  'skel_labels_pruned': pruned and labeled skeletonized objects, 
+  'props_pruned': properties of labeled objects, 
+  'nlabels_pruned': number of labeled objects
 
-- fibs_total_number:<br />
-  Function returns total number of fibers that were segmented by fibers_executor 
+**Fiber geometrical feature calculation:**
 
-- fibs_fibs_neigh_num:<br />
-  Function calculates number of other fibers neighbor in the given radius. The distance is calculated between fibers centroids.
+- fibs_geom (executed_fibs, radius):<br />
+  Function returns dataframe which contains information about fibers
 
-- fibs_length:<br />
-  Function returns list of fibers length  
+  arguments:
+  - executed_fibs: array with calculated features of labeled fibers
+  - radius: radius of neighborhood outline    
 
-- fibs_angle:<br />
-  Function returns list of fibers angle to against X axis  
+  function returns:
+  - pd.DataFrame with calculated fibers features (number, length, angle, strightness, thickness, linearity)
 
-- fibs_strightness:<br />
-  Functions performs calculation of straightness of fibers. 
+**Spatial:**
 
-- fibs_thikness:<br />
-  Function returns list of fibers thickness  
+- fibs_spatial (cells_coords_list, executed_fibs, radius, cell_type = 'None', cell_type_list = 'None'):<br />
+  Function returns dataframe which contains information about neighboring cells, their type, and features
 
-- fibs_linearity:<br />
-  Function returns linearity between fiber of interest and other closest fiber neighbors. 
+  arguments:
+  - cells_coords_list: list of cells coords
+  - executed_fibs: array with calculated features of labeled fibers
+  - radius: radius of neighborhood outline
+  - cell_type: default 'None', list of cell types for spatial analysis. 'All' make function perform calculation for all types of     cell
+  - cell_type_list: default 'None', list(column) with cell types
 
-**Cells:**
+  function returns:
+  - pd.DataFrame with calculatedd spatial information of neighboring cells
+ 
 
-- centroid_list_transform:<br />
-  Function helps to put XY coordinates of objects as list of tuples.
+- cell_cell_spatial (cells_coords_list, radius, cell_type = 'None', cell_type_list = 'None', cell_feature_list = 'None'):<br />
+  Function returns dataframe which contains information about neighboring cells, their type, and features
 
-- cells_cells_neigh:<br />
-  Function returns list of cell neighbors indexes
+  arguments:
+  - cells_coords_list: list of cells coords
+  - radius: radius of neighborhood outline
+  - cell_type: default 'None', list of cell types for spatial analysis. 'All' make function perform calculation for all types of     cell
+  - cell_type_list: list(column) with cell types
+  - cell_feature_list: list(colum) of feature of cells    
 
-- cell_fibs_total_num:<br />
-  Function returns total number of fibs neighbors
+  function returns:
+  - pd.DataFrame with calculatedd spatial information of neighboring cells
+ 
 
-- cell_cell_type_neigbor:<br />
-  Function returns number of neighbors of particular type
+- cell_fibs_spatial (executed_fibs, cells_coords_list, radius):<br />
+  
+  Function returns dataframe which contains information about neighboring fibers and their features
 
-- cell_fibs_neigh:<br />
-  Function returns number of fibs neighbors
+  arguments:
+  - executed_fibs: dictionary executed with fiber_executer function that contains information about segmented fibers
+  - cells_coords_list: list with cells coordinates (y,x)
+  - radius: radius of neighborhood outline    
 
-- cell_fibs_neigh_num:<br />
-  Function returns number of fibs neighbors
+  function returns:
+  - pd.DataFrame with calculatedd spatial information of neighboring fibers
 
-- cell_fibs_neigh_length:<br />
-  Function calculates average length of neighboring fibers
 
-- cell_fibs_neigh_angle:<br />
-  Function returns average angle of neighboring fibers
+**Example of usage:**
 
-- cell_fibs_neigh_strightness:<br />
-  Function returns average straightness of neighboring fibers
+from skimage.morphology import medial_axis
+import numpy as np
+from skimage.measure import regionprops
+from skimage.measure import label
+from skimage.graph import route_through_array
+from scipy.ndimage import binary_hit_or_miss
 
-- cell_fibs_neigh_strightness:<br />
-  Function returns average thickness of neighboring fibers
 
-- cell_fibs_neigh_strightness:<br />
-  Function returns average linearity of neighboring fibers
+For example, we have dataframe with information about cells (localization (cells_coords), type of cell (cell_type), and features of cells (cell_feature_1, cell_feature_2))
+
+![Table_1](https://user-images.githubusercontent.com/65576385/121410782-91fbb880-c928-11eb-97c7-ddf9229ab30d.PNG)
+
+
+**Generating lists form dataframe columns**
+
+cells_coords = list(dataframe.loc[:, 'cells_coords'])
+cell_type = list(dataframe.loc[:, 'cell_type'])
+cell_feature_1 = list(dataframe.loc[:, 'cell_feature_1'])
+cell_feature_2 = list(dataframe.loc[:, 'cell_feature_2'])
+
+**Importing image sample**
+
+img = io.imread('C:/Users/test_image.tif')
+fig, ax = plt.subplots(figsize = (100,100))
+ax = plt.imshow(img)
+
+![set1_FIB_HEL](https://user-images.githubusercontent.com/65576385/121410856-9e801100-c928-11eb-8450-7878828fb97d.png)
+
+
+**Image filtering (Frangi filter implementation)**
+
+gray_frangi = np.array(frangi(img, sigmas=range(4, 6, 10), gamma = 25, black_ridges = False))
+gray_frangi_bit = (gray_frangi/255) > 0.000000001)
+fig, ax = plt.subplots(figsize = (50,50))
+ax = plt.imshow(gray_frangi_bit, cmap = 'gray')
+
+![frangi_fltr](https://user-images.githubusercontent.com/65576385/121409479-30871a00-c927-11eb-840a-d6dc910a96bc.png)
+
+
+**Fibers skeletonization and labeling**
+
+fibers = fibseg.fibers_executor(gray_frangi_bit)
+fig, ax = plt.subplots(figsize = (50,50))
+ax = plt.imshow (fibers, cmap = 'gray')
+
+![pruned_skeleton](https://user-images.githubusercontent.com/65576385/121409573-498fcb00-c927-11eb-897e-8a78424296e4.png)
+
+
+**Fiber geometry**
+
+fbs_mrph = fibs_geom (fibere_exe, 25)
+
+![Table_3](https://user-images.githubusercontent.com/65576385/121409713-688e5d00-c927-11eb-8513-0d08c429fade.PNG)
+
+
+**Fiber spatial analysis**
+
+fib_spat = fibs_spatial (cells_coords, fibere_exe, 25, cell_type = ['red', 'green', 'yellow'], cell_type_list = cell_type)
+
+![Table_2](https://user-images.githubusercontent.com/65576385/121409949-ac816200-c927-11eb-8252-6be29b3e4a81.PNG)
+
+
+**Cell spatial analysis**
+
+cell_cell_spt = cell_cell_spatial (cells_coords, 25, cell_type = 'All', cell_type_list = cell_type_l, cell_feature_list = 'None')
+
+![Table_4](https://user-images.githubusercontent.com/65576385/121410054-ca4ec700-c927-11eb-972b-f341d89d1c2d.PNG)
+
+cll_fbs_sptl = cell_fibs_spatial (fibere_exe, cells_coords, 25)
+
+![Table_5](https://user-images.githubusercontent.com/65576385/121410231-fe29ec80-c927-11eb-9a69-30a39c06b5d0.PNG)
+
+
+**Visualization**
+
+vis = visualization (gray_frangi_bit, cells_coords, cell_type, fibere_exe, 5)
+
+![overlaid_map](https://user-images.githubusercontent.com/65576385/121410307-113cbc80-c928-11eb-8a0b-51e2702ae168.png)
+
+
+
+
+
+
+
