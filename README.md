@@ -1,14 +1,21 @@
 # Microsa
 
+
 Project was developed by G.Vasiukov and S.Novitskiy
 
+
+
 **Microsa** (**Micro**environment **s**patial **a**nalysis) is a package of useful functions for analysis of fibrous components of tissue microenvironment and combine that analysis in spatial dependent manner. The purpose of that library is to provide simplified tool  that gives an opportunity to combine the analysis of cellular and non-cellular components of tissue microenvironment.
+
+
 
 **Utilization:**
 -	Segmentation of fibril-like objects (tensor method) in 2D;
 -	Calculation of fibers’ centroid, length, width, angle and linearity in 2D;
 -	Estimation of fibers' features and providing a detailed report in pandas.DataFrame format;
 -	Implementation of spatial analysis between cellular and non-cellular objects.
+
+
 
 **Installation:**
 - Using pip:<br />
@@ -18,6 +25,8 @@ Project was developed by G.Vasiukov and S.Novitskiy
     $ cd Microsa<br />
     $ python setup.py install<br />
     
+
+
 **Requirements:**
 -	Python 3.7;
 -	Numpy >= 1.14;
@@ -26,13 +35,18 @@ Project was developed by G.Vasiukov and S.Novitskiy
 -	Pandas >= 1.1.3;
 -	Matplotlib >= 2.0.
 
+
+
 **Usage:**
 
 Open a grayscale image, perform filtering, binarization and segmentation of fibers, calculate geometrical and spatial features of fibers, perform spatial analysis for other objects (cells).
 
+
+
 **Fiber segmentation module:**
   
-- fibers_executor:<br />
+- fibers_executor (image):<br />
+
   Function mainly performs segmentation of fibers and extract parameters that are required for other functions like number of       labels, distance between centroids etc.
 
   arguments:
@@ -45,9 +59,12 @@ Open a grayscale image, perform filtering, binarization and segmentation of fibe
   'props_pruned': properties of labeled objects, 
   'nlabels_pruned': number of labeled objects
 
+
+
 **Fiber geometrical feature calculation:**
 
 - fibs_geom (executed_fibs, radius):<br />
+
   Function returns dataframe which contains information about fibers
 
   arguments:
@@ -57,9 +74,12 @@ Open a grayscale image, perform filtering, binarization and segmentation of fibe
   function returns:
   - pd.DataFrame with calculated fibers features (number, length, angle, strightness, thickness, linearity)
 
+
+
 **Spatial:**
 
 - fibs_spatial (cells_coords_list, executed_fibs, radius, cell_type = 'None', cell_type_list = 'None'):<br />
+
   Function returns dataframe which contains information about neighboring cells, their type, and features
 
   arguments:
@@ -74,6 +94,7 @@ Open a grayscale image, perform filtering, binarization and segmentation of fibe
  
 
 - cell_cell_spatial (cells_coords_list, radius, cell_type = 'None', cell_type_list = 'None', cell_feature_list = 'None'):<br />
+
   Function returns dataframe which contains information about neighboring cells, their type, and features
 
   arguments:
@@ -100,19 +121,28 @@ Open a grayscale image, perform filtering, binarization and segmentation of fibe
   - pd.DataFrame with calculatedd spatial information of neighboring fibers
 
 
+
 **Example of usage:**
 
 from skimage.morphology import medial_axis
+
 import numpy as np
+
 from skimage.measure import regionprops
+
 from skimage.measure import label
+
 from skimage.graph import route_through_array
+
 from scipy.ndimage import binary_hit_or_miss
+
+
 
 
 For example, we have dataframe with information about cells (localization (cells_coords), type of cell (cell_type), and features of cells (cell_feature_1, cell_feature_2))
 
 ![Table_1](https://user-images.githubusercontent.com/65576385/121410782-91fbb880-c928-11eb-97c7-ddf9229ab30d.PNG)
+
 
 
 **Generating lists form dataframe columns**
@@ -121,6 +151,8 @@ cells_coords = list(dataframe.loc[:, 'cells_coords'])
 cell_type = list(dataframe.loc[:, 'cell_type'])
 cell_feature_1 = list(dataframe.loc[:, 'cell_feature_1'])
 cell_feature_2 = list(dataframe.loc[:, 'cell_feature_2'])
+
+
 
 **Importing image sample**
 
@@ -131,6 +163,7 @@ ax = plt.imshow(img)
 ![set1_FIB_HEL](https://user-images.githubusercontent.com/65576385/121410856-9e801100-c928-11eb-8450-7878828fb97d.png)
 
 
+
 **Image filtering (Frangi filter implementation)**
 
 gray_frangi = np.array(frangi(img, sigmas=range(4, 6, 10), gamma = 25, black_ridges = False))
@@ -139,6 +172,7 @@ fig, ax = plt.subplots(figsize = (50,50))
 ax = plt.imshow(gray_frangi_bit, cmap = 'gray')
 
 ![frangi_fltr](https://user-images.githubusercontent.com/65576385/121409479-30871a00-c927-11eb-840a-d6dc910a96bc.png)
+
 
 
 **Fibers skeletonization and labeling**
@@ -153,6 +187,7 @@ plt.show()
 ![pruned_skeleton](https://user-images.githubusercontent.com/65576385/121409573-498fcb00-c927-11eb-897e-8a78424296e4.png)
 
 
+
 **Fiber geometry**
 
 fbs_mrph = fibs_geom (fibere_exe, 25)
@@ -160,11 +195,13 @@ fbs_mrph = fibs_geom (fibere_exe, 25)
 ![Table_3](https://user-images.githubusercontent.com/65576385/121409713-688e5d00-c927-11eb-8513-0d08c429fade.PNG)
 
 
+
 **Fiber spatial analysis**
 
 fib_spat = fibs_spatial (cells_coords, fibere_exe, 25, cell_type = 'All', cell_type_list = cell_type)
 
 ![Table_2](https://user-images.githubusercontent.com/65576385/121409949-ac816200-c927-11eb-8252-6be29b3e4a81.PNG)
+
 
 
 **Cell spatial analysis**
@@ -176,6 +213,7 @@ cell_cell_spt = cell_cell_spatial (cells_coords, 25, cell_type = ['green', 'red'
 cll_fbs_sptl = cell_fibs_spatial (fibere_exe, cells_coords, 25)
 
 ![Table_5](https://user-images.githubusercontent.com/65576385/121410231-fe29ec80-c927-11eb-9a69-30a39c06b5d0.PNG)
+
 
 
 **Visualization**
