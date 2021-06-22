@@ -5,7 +5,7 @@ Project was developed by G.Vasiukov and S.Novitskiy
 
 
 
-**Microsa** (**Micro**environment **s**patial **a**nalysis) is a package of useful functions for analysis of fibrous components of tissue microenvironment and combine that analysis in spatial dependent manner. The purpose of that library is to provide simplified tool  that gives an opportunity to combine the analysis of cellular and non-cellular components of tissue microenvironment.
+**Microsa** (**Micro**environment **s**patial **a**nalysis) is a package of useful functions for analysis of fibrous components of tissue microenvironment and combine that analysis in spatial dependent manner. The purpose of presented package is to provide simplified tool which gives an opportunity to combine the analysis of cellular and non-cellular components of tissue microenvironment.
 
 
 
