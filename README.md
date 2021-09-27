@@ -124,12 +124,21 @@ Open a grayscale image, perform filtering, binarization and segmentation of fibe
 
 **Example of usage:**
 
-from skimage.morphology import medial_axis<br />
 import numpy as np<br />
+from skimage import io<br />
+from matplotlib import colors<br />
+from skimage.morphology import medial_axis<br />
 from skimage.measure import regionprops<br />
 from skimage.measure import label<br />
+from scipy import ndimage<br />
 from skimage.graph import route_through_array<br />
-from scipy.ndimage import binary_hit_or_miss<br />
+from scipy.ndimage import binary_closing, binary_hit_or_miss<br />
+from skimage.filters import frangi<br />
+from scipy.spatial import distance<br />
+import pandas as pd<br />
+import matplotlib<br />
+from matplotlib import pyplot as plt<br />
+
 
 
 For example, we have dataframe with information about cells (localization (cells_coords), type of cell (cell_type), and features of cells (cell_feature_1, cell_feature_2))
