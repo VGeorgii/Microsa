@@ -141,7 +141,21 @@ from matplotlib import pyplot as plt<br />
 
 
 
-For example, we have dataframe with information about cells (localization (cells_coords), type of cell (cell_type), and features of cells (cell_feature_1, cell_feature_2))
+For example, we have dataframe with information about cells (localization (cells_coords), type of cell (cell_type), and features of cells (cell_feature_1, cell_feature_2))<br />
+
+**Generating dataframe with random values**
+
+
+import random<br />
+
+dataframe = pd.DataFrame ()<br />
+dataframe['cells_coords'] = [[random.randint(0, len(img)-2), random.randint(0, len(img[0])-2)] for i in np.arange(500)]<br />
+cell_type_dict = {1 : 'green', 2 : 'red', 3 : 'yellow'}<br />
+dataframe['number'] = pd.DataFrame([random.randint(1, 3) for i in np.arange(500)])<br />
+dataframe['type'] = dataframe['number'].map(cell_type_dict)<br />
+dataframe.drop('number', axis=1, inplace = True)<br />
+dataframe['cell_feature_1'] = [random.randint(0, 100) for i in np.arange(500)]<br />
+dataframe['cell_feature_2'] = [random.randint(0, 100) for i in np.arange(500)]<br />
 
 ![Table_1](https://user-images.githubusercontent.com/65576385/121410782-91fbb880-c928-11eb-97c7-ddf9229ab30d.PNG)
 
@@ -192,7 +206,7 @@ plt.show()<br />
 
 **Fiber geometry**
 
-fbs_mrph = fibs_geom (fibere_exe, 25)<br />
+fbs_mrph = fibs_geom (img, fibere_exe, 25)<br />
 
 ![Table_3](https://user-images.githubusercontent.com/65576385/121409713-688e5d00-c927-11eb-8513-0d08c429fade.PNG)
 
@@ -208,7 +222,7 @@ fib_spat = fibs_spatial (cells_coords, fibere_exe, 25, cell_type = 'All', cell_t
 
 **Cell spatial analysis**
 
-cell_cell_spt = cell_cell_spatial (cells_coords, 25, cell_type = ['green', 'red'], cell_type_list = cell_type, cell_feature_list = [cell_feature_1, cell_feature_2])<br />
+cell_cell_spt = cell_cell_spatial (cells_coords, 25, cell_type = 'All', cell_type_list = cell_type, cell_feature_list = [cell_feature_1, cell_feature_2])<br />
 
 ![Table_4](https://user-images.githubusercontent.com/65576385/121410054-ca4ec700-c927-11eb-972b-f341d89d1c2d.PNG)
 
@@ -220,13 +234,6 @@ cll_fbs_sptl = cell_fibs_spatial (fibere_exe, cells_coords, 25)<br />
 
 **Visualization**
 
-vis = visualization (gray_frangi_bit, cells_coords, cell_type, fibere_exe, 5)<br />
+vis = visualization (gray_frangi, cells_coords, cell_type, fibere_exe, 5)<br />
 
 ![overlaid_map](https://user-images.githubusercontent.com/65576385/121410307-113cbc80-c928-11eb-8a0b-51e2702ae168.png)
-
-
-
-
-
-
-
