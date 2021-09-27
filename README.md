@@ -164,7 +164,7 @@ dataframe['cell_feature_2'] = [random.randint(0, 100) for i in np.arange(500)]<b
 **Generating lists form dataframe columns**
 
 cells_coords = list(dataframe.loc[:, 'cells_coords'])<br />
-cell_type = list(dataframe.loc[:, 'cell_type'])<br />
+cell_type = list(dataframe.loc[:, 'type'])<br />
 cell_feature_1 = list(dataframe.loc[:, 'cell_feature_1'])<br />
 cell_feature_2 = list(dataframe.loc[:, 'cell_feature_2'])<br />
 
@@ -183,7 +183,7 @@ ax = plt.imshow(img)<br />
 **Image filtering (Frangi filter implementation)**
 
 gray_frangi = np.array(frangi(img, sigmas=range(4, 6, 10), gamma = 25, black_ridges = False))<br />
-gray_frangi_bit = (gray_frangi/255) > 0.000000001)<br />
+gray_frangi_bit = ((gray_frangi/255) > 0.000000001)<br />
 fig, ax = plt.subplots(figsize = (50,50))<br />
 ax = plt.imshow(gray_frangi_bit, cmap = 'gray')<br />
 
