@@ -18,12 +18,9 @@ Project was developed by G.Vasiukov and S.Novitskiy
 
 
 **Installation:**
+
 - Using pip:<br />
-    $ pip install Microsa<br />
-- Using Git repository:<br />
-    $ git clone https://github.com/VGeorgii/Microsa.git<br />
-    $ cd Microsa<br />
-    $ python setup.py install<br />
+    $ pip install microsaa<br />
     
 
 
@@ -123,6 +120,9 @@ Open a grayscale image, perform filtering, binarization and segmentation of fibe
 
 
 **Example of usage:**
+
+
+from microsaa import *
 
 import numpy as np<br />
 from skimage import io<br />
