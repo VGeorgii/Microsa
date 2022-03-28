@@ -139,7 +139,13 @@ import pandas as pd<br />
 import matplotlib<br />
 from matplotlib import pyplot as plt<br />
 
+**Importing image sample**
 
+img = io.imread('C:/Users/test_image.tif')<br />
+fig, ax = plt.subplots(figsize = (100,100))<br />
+ax = plt.imshow(img)<br />
+
+![set1_FIB_HEL](https://user-images.githubusercontent.com/65576385/121410856-9e801100-c928-11eb-8450-7878828fb97d.png)
 
 For example, we have dataframe with information about cells (localization (cells_coords), type of cell (cell_type), and features of cells (cell_feature_1, cell_feature_2))<br />
 
@@ -167,16 +173,6 @@ cells_coords = list(dataframe.loc[:, 'cells_coords'])<br />
 cell_type = list(dataframe.loc[:, 'type'])<br />
 cell_feature_1 = list(dataframe.loc[:, 'cell_feature_1'])<br />
 cell_feature_2 = list(dataframe.loc[:, 'cell_feature_2'])<br />
-
-
-
-**Importing image sample**
-
-img = io.imread('C:/Users/test_image.tif')<br />
-fig, ax = plt.subplots(figsize = (100,100))<br />
-ax = plt.imshow(img)<br />
-
-![set1_FIB_HEL](https://user-images.githubusercontent.com/65576385/121410856-9e801100-c928-11eb-8450-7878828fb97d.png)
 
 
 
