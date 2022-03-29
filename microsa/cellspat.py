@@ -1,3 +1,18 @@
+try:
+    import numpy as np
+    import pandas as pd
+    from skimage import morphology
+    from skimage.measure import regionprops
+    from skimage.measure import label
+    from scipy import ndimage
+    from skimage.graph import route_through_array
+    from scipy.ndimage import binary_closing, binary_hit_or_miss
+    from scipy.spatial import distance
+
+except ImportError:
+    print ('Import error!')
+    
+    
 def cells_cells_neigh (cells_coords_list, radius):
 
 
