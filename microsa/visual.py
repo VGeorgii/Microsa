@@ -1,3 +1,12 @@
+try:
+    import numpy as np
+    from scipy import ndimage
+    import matplotlib
+    from matplotlib import pyplot as plt
+
+except ImportError:
+    print ('Import error!')
+    
 def cell_map (list_of_coords, list_of_types, gray, dilation):
     
     
